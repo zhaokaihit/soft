@@ -5,6 +5,10 @@ floppya: 1_44="$OSLAB_PATH/linux-0.11/Image", status=inserted
 ata0-master: type=disk, path="$OSLAB_PATH/hdc-0.11.img", mode=flat, cylinders=204, heads=16, spt=38
 boot: a
 log: $OSLAB_PATH/bochsout.txt
+ata1-master: type=disk, path="$OSLAB_PATH/hdc-0.12.img", mode=flat, cylinders=204, heads=16, spt=38
+ata2-master: type=disk, path="$OSLAB_PATH/hdc-0.13.img", mode=flat, cylinders=204, heads=16, spt=38
+ata3-master: type=disk, path="$OSLAB_PATH/hdc-0.14.img", mode=flat, cylinders=204, heads=16, spt=38
+
 #parport1: enable=0
 vga_update_interval: 300000
 keyboard_serial_delay: 200
