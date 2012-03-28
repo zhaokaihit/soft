@@ -1,3 +1,7 @@
 #!/bin/sh
 export OSLAB_PATH=$(dirname `which $0`)
 mount -t minix -o loop,offset=1024 $OSLAB_PATH/hdc-0.11.img $OSLAB_PATH/hdc
+#没底啊　。。。。。
+mount -t minix -o loop,offset=1024 $OSLAB_PATH/hdc-0.12.img $OSLAB_PATH/hdc1
+mount -t minix -o loop,offset=1024 $OSLAB_PATH/hdc-0.13.img $OSLAB_PATH/hdc2
+mount -t minix -o loop,offset=1024 $OSLAB_PATH/hdc-0.14.img $OSLAB_PATH/hdc3   
