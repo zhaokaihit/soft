@@ -34,12 +34,12 @@
 00000000000i[     ]   SB16 support: no
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support: vbe 
-00000000000i[MEM0 ] allocated memory at 0xb62cb008. after alignment, vector=0xb62cc000
+00000000000i[MEM0 ] allocated memory at 0xb62de008. after alignment, vector=0xb62df000
 00000000000i[MEM0 ] 16.00MB
 00000000000i[MEM0 ] rom at 0xfffe0000/131072 ('./bochs/BIOS-bochs-latest')
 00000000000i[MEM0 ] rom at 0xc0000/39424 ('./bochs/vgabios.bin')
 00000000000i[CMOS ] Using local time for initial clock
-00000000000i[CMOS ] Setting initial clock to: Wed Mar 28 08:18:40 2012 (time0=1332893920)
+00000000000i[CMOS ] Setting initial clock to: Wed Mar 28 10:51:33 2012 (time0=1332903093)
 00000000000i[DMA  ] channel 4 used by cascade
 00000000000i[DMA  ] channel 2 used by Floppy Drive
 00000000000i[FDD  ] fd0: './linux-0.11/Image' ro=0, h=2,t=80,spt=18
@@ -100,7 +100,7 @@
 00000562191i[VGA  ] VBE known Display Interface b0c0
 00000562223i[VGA  ] VBE known Display Interface b0c4
 00000565148i[VBIOS] VBE Bios $Id: vbe.c,v 1.58 2006/08/19 09:39:43 vruppert Exp $
-00000888612i[BIOS ] ata0-0: PCHS=204/16/38 translation=none LCHS=204/16/38
+00000888850i[BIOS ] ata0-0: PCHS=204/16/38 translation=none LCHS=204/16/38
 00001200000i[XGUI ] charmap update. Font Height is 16
 00004769035i[BIOS ] IDE time out
 00004776972i[BIOS ] ata1-0: PCHS=204/16/38 translation=none LCHS=204/16/38
@@ -253,25 +253,26 @@
 00026211011i[FDD  ] read() on floppy image returns 0
 00026255966i[FDD  ] read() on floppy image returns 0
 00026300921i[FDD  ] read() on floppy image returns 0
-00084212000i[CPU  ] CPU is in protected mode (active)
-00084212000i[CPU  ] CS.d_b = 32 bit
-00084212000i[CPU  ] SS.d_b = 32 bit
-00084212000i[CPU  ] | EAX=ffffffff  EBX=0001b1d0  ECX=ffffffff  EDX=00000013
-00084212000i[CPU  ] | ESP=0001b110  EBP=00021aec  ESI=00000000  EDI=00000000
-00084212000i[CPU  ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af pf cf
-00084212000i[CPU  ] | SEG selector     base    limit G D
-00084212000i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
-00084212000i[CPU  ] |  CS:0008( 0001| 0|  0) 00000000 00000fff 1 1
-00084212000i[CPU  ] |  DS:0010( 0002| 0|  0) 00000000 00000fff 1 1
-00084212000i[CPU  ] |  SS:0010( 0002| 0|  0) 00000000 00000fff 1 1
-00084212000i[CPU  ] |  ES:0010( 0002| 0|  0) 00000000 00000fff 1 1
-00084212000i[CPU  ] |  FS:0017( 0002| 1|  3) 00000000 0000009f 1 1
-00084212000i[CPU  ] |  GS:0017( 0002| 1|  3) 00000000 0000009f 1 1
-00084212000i[CPU  ] | EIP=00006b39 (00006b39)
-00084212000i[CPU  ] | CR0=0x8000001b CR1=0 CR2=0x08032ef0
-00084212000i[CPU  ] | CR3=0x00000000 CR4=0x00000000
-00084212000i[CPU  ] >> jnz .+0xffffffe4 (0x00006b1f) : 75E4
-00084212000i[CMOS ] Last time is 1332893941 (Wed Mar 28 08:19:01 2012)
-00084212000i[XGUI ] Exit
-00084212000i[     ] restoring default signal behavior
-00084212000i[CTRL ] quit_sim called with exit code 1
+00060584000p[XGUI ] >>PANIC<< POWER button turned off.
+00060584000i[CPU  ] CPU is in protected mode (active)
+00060584000i[CPU  ] CS.d_b = 32 bit
+00060584000i[CPU  ] SS.d_b = 32 bit
+00060584000i[CPU  ] | EAX=ffffffff  EBX=0001b1c0  ECX=ffffffff  EDX=00000010
+00060584000i[CPU  ] | ESP=0001b110  EBP=00021aec  ESI=00000000  EDI=00000001
+00060584000i[CPU  ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af PF cf
+00060584000i[CPU  ] | SEG selector     base    limit G D
+00060584000i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
+00060584000i[CPU  ] |  CS:0008( 0001| 0|  0) 00000000 00000fff 1 1
+00060584000i[CPU  ] |  DS:0010( 0002| 0|  0) 00000000 00000fff 1 1
+00060584000i[CPU  ] |  SS:0010( 0002| 0|  0) 00000000 00000fff 1 1
+00060584000i[CPU  ] |  ES:0010( 0002| 0|  0) 00000000 00000fff 1 1
+00060584000i[CPU  ] |  FS:0017( 0002| 1|  3) 00000000 0000009f 1 1
+00060584000i[CPU  ] |  GS:0017( 0002| 1|  3) 00000000 0000009f 1 1
+00060584000i[CPU  ] | EIP=00006b22 (00006b22)
+00060584000i[CPU  ] | CR0=0x8000001b CR1=0 CR2=0x08032ef0
+00060584000i[CPU  ] | CR3=0x00000000 CR4=0x00000000
+00060584000i[CPU  ] >> cmp dword ptr ds:[ebx], 0x00000000 : 833B00
+00060584000i[CMOS ] Last time is 1332903108 (Wed Mar 28 10:51:48 2012)
+00060584000i[XGUI ] Exit
+00060584000i[     ] restoring default signal behavior
+00060584000i[CTRL ] quit_sim called with exit code 1
