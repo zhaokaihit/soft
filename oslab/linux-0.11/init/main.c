@@ -163,8 +163,8 @@ static char * argv_rc[] = { "/bin/sh", NULL };
 static char * envp_rc[] = { "HOME=/", NULL };
 
 static char * argv[] = { "-/bin/sh",NULL };
-static char * envp[] = { "HOME=/usr/root", NULL };
-
+//static char * envp[] = { "HOME=/usr/root", NULL };
+static char * envp[] = { "HOME=/",NULL};
 void init(void)
 {
 	int pid,i;
