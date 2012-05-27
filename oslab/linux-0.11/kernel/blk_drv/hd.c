@@ -72,6 +72,7 @@ int sys_setup(void * BIOS)
 {
 	static int callable = 1;
 	int i,drive;
+	int ifu;
 	unsigned char cmos_disks;
 	struct partition *p;
 	struct buffer_head * bh;
@@ -80,8 +81,9 @@ int sys_setup(void * BIOS)
 		return -1;
 	callable = 0;
 #ifndef HD_TYPE
-	for (drive=0 ; drive<2 ; drive++) {
+	for (drive=0 ; drive<4 ; drive++) {
 		hd_info[drive].cyl = *(unsigned short *) BIOS;
+		printk("%d\n",hd_info[drive].cyl);
 		hd_info[drive].head = *(unsigned char *) (2+BIOS);
 		hd_info[drive].wpcom = *(unsigned short *) (5+BIOS);
 		hd_info[drive].ctl = *(unsigned char *) (8+BIOS);
@@ -90,9 +92,29 @@ int sys_setup(void * BIOS)
 		BIOS += 16;
 	}//zhaokai change drive<2 to drive<4 but failed........
 	if (hd_info[1].cyl)
+	{
+		printk("%d\n",hd_info[1].cyl);
 		NR_HD=2;
+	}
+	else if (hd_info[2].cyl)
+	{
+		printk("%d\n",hd_info[2].cyl);
+		NR_HD=3;
+	}
+	else if (hd_info[3].cyl)
+	{	
+		printk("%d\n",hd_info[3].cyl);
+		NR_HD=4;
+	}
 	else
+	{
+		for( ifu=1;i<4;i++)
+		{
+			printk("%d\n",hd_info[i].cyl);
+		}
 		NR_HD=1;
+	}
+	printk("%d\n",NR_HD);
 #endif
 	for (i=0 ; i<NR_HD ; i++) {
 		hd[i*5].start_sect = 0;
