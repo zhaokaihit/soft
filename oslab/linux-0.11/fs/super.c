@@ -27,7 +27,7 @@ __res; })
 struct super_block super_block[NR_SUPER];
 /* this is initialized in init/main.c */
 int ROOT_DEV = 0;
-
+//zhaokai change 0 to 1...but nothing happened.
 static void lock_super(struct super_block * sb)
 {
 	cli();

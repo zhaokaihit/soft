@@ -88,7 +88,7 @@ int sys_setup(void * BIOS)
 		hd_info[drive].lzone = *(unsigned short *) (12+BIOS);
 		hd_info[drive].sect = *(unsigned char *) (14+BIOS);
 		BIOS += 16;
-	}
+	}//zhaokai change drive<2 to drive<4 but failed........
 	if (hd_info[1].cyl)
 		NR_HD=2;
 	else
