@@ -32,7 +32,7 @@ inb_p(0x71); \
 
 /* Max read/write errors/sector */
 #define MAX_ERRORS	7
-#define MAX_HD		2
+#define MAX_HD		4
 
 static void recal_intr(void);
 

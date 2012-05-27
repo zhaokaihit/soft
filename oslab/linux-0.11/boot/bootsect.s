@@ -40,8 +40,8 @@ ENDSEG   = SYSSEG + SYSSIZE		! where to stop loading
 
 ! ROOT_DEV:	0x000 - same type of floppy as boot.
 !		0x301 - first partition on first drive etc
-!ROOT_DEV = 0x306
-ROOT_DEV = 0x301
+ROOT_DEV = 0x306
+!ROOT_DEV = 0x301   !no help
 !changed test!!!
 entry _start
 _start:

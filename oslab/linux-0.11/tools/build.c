@@ -58,7 +58,7 @@
  *      ...
  */
 
-#define DEFAULT_MAJOR_ROOT 3
+#define DEFAULT_MAJOR_ROOT 3//4
 #define DEFAULT_MINOR_ROOT 1
 
 /* max nr of sectors of setup: don't change unless you also change
@@ -85,6 +85,9 @@ int main(int argc, char ** argv)
 	char major_root, minor_root;
 	struct stat sb;
 
+	//test
+	fprintf(stderr,"argc is %d\n",argc);
+	
 	if ((argc != 4) && (argc != 5))
 		usage();
 	if (argc == 5) {
@@ -106,6 +109,8 @@ int main(int argc, char ** argv)
 	fprintf(stderr, "Root device is (%d, %d)\n", major_root, minor_root);
 	if ((major_root != 2) && (major_root != 3) &&
 	    (major_root != 0)) {
+	    //tell me why!!!!
+	    fprintf(stderr,"major_root is (%d)\n",major_root);
 		fprintf(stderr, "Illegal root device (major = %d)\n",
 			major_root);
 		die("Bad root device --- major #");
