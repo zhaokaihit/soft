@@ -84,6 +84,29 @@ start:
 	mov	cx,#0x10
 	rep
 	movsb
+!Get hd2 data 
+
+!	mov	ax,#0x0000
+!	mov	ds,ax
+!	lds	si,[4*0x4B]
+!	mov	ax,#INITSEG
+!	mov	es,ax
+!	mov	di,#0x00A0
+!	mov	cx,#0x10
+!	rep
+!	movsb
+
+!Get hd3 data
+
+!	mov	ax,#0x0000
+!	mov	ds,ax
+!	lds	si,[4*0x4F]
+!	mov	ax,INITSEG
+!	mov	es,ax
+!	mov	di,#0x00B0
+!	mov	cx,#0x10
+!	rep
+	movsb
 
 ! Check that there IS a hd1 :-)
 

@@ -49,7 +49,7 @@ struct hd_i_struct {
 struct hd_i_struct hd_info[] = { HD_TYPE };
 #define NR_HD ((sizeof (hd_info))/(sizeof (struct hd_i_struct)))
 #else
-struct hd_i_struct hd_info[] = { {0,0,0,0,0,0},{0,0,0,0,0,0} };
+struct hd_i_struct hd_info[] = { {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};//extension!!
 static int NR_HD = 0;
 #endif
 
@@ -114,7 +114,7 @@ int sys_setup(void * BIOS)
 		}
 		NR_HD=1;
 	}
-	printk("%d\n",NR_HD);
+	printk("NR_HD in hd.c is%d\n",NR_HD);
 #endif
 	for (i=0 ; i<NR_HD ; i++) {
 		hd[i*5].start_sect = 0;

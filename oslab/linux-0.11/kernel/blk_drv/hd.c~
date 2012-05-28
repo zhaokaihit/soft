@@ -32,7 +32,7 @@ inb_p(0x71); \
 
 /* Max read/write errors/sector */
 #define MAX_ERRORS	7
-#define MAX_HD		2
+#define MAX_HD		4
 
 static void recal_intr(void);
 
@@ -49,7 +49,7 @@ struct hd_i_struct {
 struct hd_i_struct hd_info[] = { HD_TYPE };
 #define NR_HD ((sizeof (hd_info))/(sizeof (struct hd_i_struct)))
 #else
-struct hd_i_struct hd_info[] = { {0,0,0,0,0,0},{0,0,0,0,0,0} };
+struct hd_i_struct hd_info[] = { {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0}};
 static int NR_HD = 0;
 #endif
 
@@ -72,6 +72,7 @@ int sys_setup(void * BIOS)
 {
 	static int callable = 1;
 	int i,drive;
+	int ifu;
 	unsigned char cmos_disks;
 	struct partition *p;
 	struct buffer_head * bh;
@@ -82,17 +83,38 @@ int sys_setup(void * BIOS)
 #ifndef HD_TYPE
 	for (drive=0 ; drive<4 ; drive++) {
 		hd_info[drive].cyl = *(unsigned short *) BIOS;
+		printk("%d\n",hd_info[drive].cyl);
 		hd_info[drive].head = *(unsigned char *) (2+BIOS);
 		hd_info[drive].wpcom = *(unsigned short *) (5+BIOS);
 		hd_info[drive].ctl = *(unsigned char *) (8+BIOS);
 		hd_info[drive].lzone = *(unsigned short *) (12+BIOS);
 		hd_info[drive].sect = *(unsigned char *) (14+BIOS);
 		BIOS += 16;
-	}//zhaokai change drive<2 to drive<4
+	}//zhaokai change drive<2 to drive<4 but failed........
 	if (hd_info[1].cyl)
+	{
+		printk("%d\n",hd_info[1].cyl);
 		NR_HD=2;
+	}
+	else if (hd_info[2].cyl)
+	{
+		printk("%d\n",hd_info[2].cyl);
+		NR_HD=3;
+	}
+	else if (hd_info[3].cyl)
+	{	
+		printk("%d\n",hd_info[3].cyl);
+		NR_HD=4;
+	}
 	else
+	{
+		for( ifu=1;i<4;i++)
+		{
+			printk("%d\n",hd_info[i].cyl);
+		}
 		NR_HD=1;
+	}
+	printk("NR_HD in hd.c is%d\n",NR_HD);
 #endif
 	for (i=0 ; i<NR_HD ; i++) {
 		hd[i*5].start_sect = 0;
