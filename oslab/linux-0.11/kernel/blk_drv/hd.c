@@ -83,7 +83,7 @@ int sys_setup(void * BIOS)
 #ifndef HD_TYPE
 	for (drive=0 ; drive<4 ; drive++) {
 		hd_info[drive].cyl = *(unsigned short *) BIOS;
-		printk("%d\n",hd_info[drive].cyl);
+		printk("drive = %d,hd_info[drive].cyl = %d\n",drive,hd_info[drive].cyl);
 		hd_info[drive].head = *(unsigned char *) (2+BIOS);
 		hd_info[drive].wpcom = *(unsigned short *) (5+BIOS);
 		hd_info[drive].ctl = *(unsigned char *) (8+BIOS);
@@ -93,17 +93,17 @@ int sys_setup(void * BIOS)
 	}//zhaokai change drive<2 to drive<4 but failed........
 	if (hd_info[1].cyl)
 	{
-		printk("%d\n",hd_info[1].cyl);
+		//printk("%d\n",hd_info[1].cyl);
 		NR_HD=2;
 	}
 	else if (hd_info[2].cyl)
 	{
-		printk("%d\n",hd_info[2].cyl);
+		//printk("%d\n",hd_info[2].cyl);
 		NR_HD=3;
 	}
 	else if (hd_info[3].cyl)
 	{	
-		printk("%d\n",hd_info[3].cyl);
+		//printk("%d\n",hd_info[3].cyl);
 		NR_HD=4;
 	}
 	else
@@ -114,7 +114,7 @@ int sys_setup(void * BIOS)
 		}
 		NR_HD=1;
 	}
-	printk("NR_HD in hd.c is%d\n",NR_HD);
+	printk("NR_HD in hd.c is %d\n",NR_HD);
 #endif
 	for (i=0 ; i<NR_HD ; i++) {
 		hd[i*5].start_sect = 0;
