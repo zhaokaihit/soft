@@ -60,9 +60,10 @@
 
 #define DEFAULT_MAJOR_ROOT 3//4
 #define DEFAULT_MINOR_ROOT 1
-
+//#define DEFAULT_MINOR_ROOT 6
 /* max nr of sectors of setup: don't change unless you also change
  * bootsect etc */
+//Damn!   both modify bootsect and build can just make it real!
 #define SETUP_SECTS 4
 
 #define STRINGIFY(x) #x

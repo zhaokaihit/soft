@@ -91,6 +91,32 @@ int sys_setup(void * BIOS)
 		hd_info[drive].sect = *(unsigned char *) (14+BIOS);
 		BIOS += 16;
 	}//zhaokai change drive<2 to drive<4 but failed........
+	
+		if (hd_info[3].cyl)
+	{
+		//printk("%d\n",hd_info[1].cyl);
+		NR_HD=4;
+	}
+	else if (hd_info[2].cyl)
+	{
+		//printk("%d\n",hd_info[2].cyl);
+		NR_HD=3;
+	}
+	else if (hd_info[1].cyl)
+	{	
+		//printk("%d\n",hd_info[3].cyl);
+		NR_HD=2;
+	}
+	else
+	{
+		
+		NR_HD=1;
+	}
+	for( ifu=1;i<4;i++)
+		{
+			printk("%d\n",hd_info[i].cyl);
+		}
+	/*
 	if (hd_info[1].cyl)
 	{
 		//printk("%d\n",hd_info[1].cyl);
@@ -114,6 +140,8 @@ int sys_setup(void * BIOS)
 		}
 		NR_HD=1;
 	}
+	*/
+	
 	printk("NR_HD in hd.c is %d\n",NR_HD);
 #endif
 	for (i=0 ; i<NR_HD ; i++) {
@@ -221,6 +249,29 @@ static void hd_out(unsigned int drive,unsigned int nsect,unsigned int sect,
 	outb(cmd,++port);
 }
 
+/*
+static void hd_out(unsigned int drive,unsigned int nsect,unsigned int sect,
+		unsigned int head,unsigned int cyl,unsigned int cmd,
+		void (*intr_addr)(void))
+{
+	register int port asm("dx");
+
+	if (drive>1 || head>15)
+		panic("Trying to write bad sector");
+	if (!controller_ready())
+		panic("HD controller not ready");
+	do_hd = intr_addr;
+	outb_p(hd_info[drive].ctl,HD_CMD);
+	port=HD_DATA;
+	outb_p(hd_info[drive].wpcom>>2,++port);
+	outb_p(nsect,++port);
+	outb_p(sect,++port);
+	outb_p(cyl,++port);
+	outb_p(cyl>>8,++port);
+	outb_p(0xA0|(drive<<4)|head,++port);
+	outb(cmd,++port);
+}
+//procted!!!*/
 static int drive_busy(void)
 {
 	unsigned int i;
@@ -252,8 +303,8 @@ static void reset_controller(void)
 static void reset_hd(int nr)
 {
 	reset_controller();
-	hd_out(nr,hd_info[nr].sect,hd_info[nr].sect,hd_info[nr].head-1,
-		hd_info[nr].cyl,WIN_SPECIFY,&recal_intr);
+	printk("In hd.c reset_hd(int nr):nr is %d,hd_info[nr].sect is %d,hd_info[nr].sect is %d,hd_info[nr].head-1 is %d,hd_info[nr].cyl is %d,WIN_SPECIFY is %d,&recal_intr is %d\n",nr,hd_info[nr].sect,hd_info[nr].sect,hd_info[nr].head-1,hd_info[nr].cyl,WIN_SPECIFY,&recal_intr);
+	hd_out(nr,hd_info[nr].sect,hd_info[nr].sect,hd_info[nr].head-1,hd_info[nr].cyl,WIN_SPECIFY,&recal_intr);
 }
 
 void unexpected_hd_interrupt(void)
@@ -322,13 +373,16 @@ void do_hd_request(void)
 
 	INIT_REQUEST;
 	dev = MINOR(CURRENT->dev);
+	//printk("In hd.c do_hd_request() dev (1st) is %d\n",dev );
 	block = CURRENT->sector;
+	
 	if (dev >= 5*NR_HD || block+2 > hd[dev].nr_sects) {
 		end_request(0);
 		goto repeat;
 	}
 	block += hd[dev].start_sect;
 	dev /= 5;
+	//printk("IN hd.c do_hd_quest() dev (2st) is %d\n",dev);
 	__asm__("divl %4":"=a" (block),"=d" (sec):"0" (block),"1" (0),
 		"r" (hd_info[dev].sect));
 	__asm__("divl %4":"=a" (cyl),"=d" (head):"0" (block),"1" (0),
@@ -348,7 +402,12 @@ void do_hd_request(void)
 		return;
 	}	
 	if (CURRENT->cmd == WRITE) {
-		hd_out(dev,nsect,sec,head,cyl,WIN_WRITE,&write_intr);
+		printk("In hd.c do_hd_request() dev (1st) is %d\n",dev );
+		//hd_out(dev,nsect,sec,head,cyl,WIN_WRITE,&write_intr);
+		hd_out(0,nsect,sec,head,cyl,WIN_WRITE,&write_intr);
+		for(i=0 ; i<3000 && !(r=inb_p(HD_STATUS)&DRQ_STAT) ; i++)
+			/* nothing */ ;
+		hd_out(1,nsect,sec,head,cyl,WIN_WRITE,&write_intr);
 		for(i=0 ; i<3000 && !(r=inb_p(HD_STATUS)&DRQ_STAT) ; i++)
 			/* nothing */ ;
 		if (!r) {
