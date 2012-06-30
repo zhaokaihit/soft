@@ -88,6 +88,7 @@ static void add_request(struct blk_dev_struct * dev, struct request * req)
 static void make_request(int major,int rw, struct buffer_head * bh)
 {
 	struct request * req;
+	struct request * req1;
 	int rw_ahead;
 
 /* WRITEA/READA is special case - it is not really needed, so if the */
@@ -130,6 +131,50 @@ repeat:
 		goto repeat;
 	}
 /* fill up the request-info, and add it to the queue */
+	
+	req->cmd = rw;
+	if (rw == READ)
+	{
+	req->dev = bh->b_dev;
+	//printk("!");
+	req->errors=0;
+	req->sector = bh->b_blocknr<<1;
+	req->nr_sectors = 2;
+	req->buffer = bh->b_data;
+	req->waiting = NULL;
+	req->bh = bh;
+	req->next = NULL;
+	add_request(major+blk_dev,req);
+	}
+	else if (rw == WRITE)
+	{
+		//printk("?");  disk0 769 disk1 774
+		req->dev = bh->b_dev;
+		printk("req->dev is %d\n",req->dev);
+		req->errors=0;
+		req->sector = bh->b_blocknr<<1;
+		req->nr_sectors = 2;
+		req->buffer = bh->b_data;
+		req->waiting = NULL;
+		req->bh = bh;
+		req->next = NULL;
+		add_request(major+blk_dev,req);
+
+		//req1->dev = 774;
+		//add_request(major+blk_dev,req);
+		/*
+		req1->dev = 774;
+		req1->errors=0;
+		req1->sector = bh->b_blocknr<<1;
+		req1->nr_sectors = 2;
+		req1->buffer = bh->b_data;
+		req1->waiting = NULL;
+		req1->bh = bh;
+		req1->next = NULL;
+		add_request(major+blk_dev,req1);
+	*/
+	}
+	/*
 	req->dev = bh->b_dev;
 	req->cmd = rw;
 	req->errors=0;
@@ -140,6 +185,7 @@ repeat:
 	req->bh = bh;
 	req->next = NULL;
 	add_request(major+blk_dev,req);
+	*/
 }
 
 void ll_rw_block(int rw, struct buffer_head * bh)

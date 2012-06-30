@@ -59,11 +59,11 @@
  */
 
 #define DEFAULT_MAJOR_ROOT 3//4
-#define DEFAULT_MINOR_ROOT 1
-//#define DEFAULT_MINOR_ROOT 6
+//#define DEFAULT_MINOR_ROOT 1
+#define DEFAULT_MINOR_ROOT 6
 /* max nr of sectors of setup: don't change unless you also change
  * bootsect etc */
- //Damn!   both modify bootsect and build can just make it real!
+//Damn!   both modify bootsect and build can just make it real!
 #define SETUP_SECTS 4
 
 #define STRINGIFY(x) #x
@@ -86,9 +86,10 @@ int main(int argc, char ** argv)
 	char major_root, minor_root;
 	struct stat sb;
 
-	//test
+	//int devnum = 0 ;//test
 	fprintf(stderr,"argc is %d\n",argc);
-	
+	//printf("!!!!!!\n");
+	//scanf(devnum);
 	if ((argc != 4) && (argc != 5))
 		usage();
 	if (argc == 5) {

@@ -26,6 +26,7 @@
 #include <asm/system.h>
 #include <asm/io.h>
 
+extern int devi ;
 extern int end;
 extern void put_super(int);
 extern void invalidate_inodes(int);
@@ -46,16 +47,36 @@ static inline void wait_on_buffer(struct buffer_head * bh)
 
 int sys_sync(void)
 {
+	
 	int i;
-	struct buffer_head * bh;
+	struct buffer_head * bh, * bhi , * temp;
 
 	sync_inodes();		/* write out inodes into buffers */
 	bh = start_buffer;
-	for (i=0 ; i<NR_BUFFERS ; i++,bh++) {
+	bhi = start_buffer;
+	temp = start_buffer;
+	printk("bh is %d ,bhi is %d\n",bh,bhi);
+	devi = 0 ;
+	for (i=0 ; i<NR_BUFFERS ; i++,bh++,bhi++) {
 		wait_on_buffer(bh);
 		if (bh->b_dirt)
+		{
+			
 			ll_rw_block(WRITE,bh);
+			bhi->b_dirt = 1;
+		}
 	}
+	bhi = temp;
+	devi = 1;
+	for (i=0 ; i<NR_BUFFERS ; i++,bhi++) {
+		wait_on_buffer(bhi);
+		if (bhi->b_dirt)
+		{
+			ll_rw_block(WRITE,bhi);
+			printk("W");
+		}
+	}
+	
 	return 0;
 }
 

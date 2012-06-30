@@ -22,6 +22,7 @@
 #include <asm/io.h>
 #include <asm/segment.h>
 
+
 #define MAJOR_NR 3
 #include "blk.h"
 
@@ -38,7 +39,8 @@ static void recal_intr(void);
 
 static int recalibrate = 1;
 static int reset = 1;
-
+int devnum = 0 ;
+//extern int devcfg = 0 ;
 /*
  *  This struct defines the HD's and their types.
  */
@@ -53,6 +55,7 @@ struct hd_i_struct hd_info[] = { {0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,
 static int NR_HD = 0;
 #endif
 
+extern int devi ;
 static struct hd_struct {
 	long start_sect;
 	long nr_sects;
@@ -171,7 +174,8 @@ int sys_setup(void * BIOS)
 
 		
 	*/
-
+	//printk("Make config for Data System!");
+	//scanf("%d",devcfg);
 	if ((cmos_disks = CMOS_READ(0x12)) & 0xf0)
 		if (cmos_disks & 0x0f)
 			NR_HD = 2;
@@ -226,13 +230,24 @@ static int win_result(void)
 	if (i&1) i=inb(HD_ERROR);
 	return (1);
 }
+//FILE *fp;
 
 static void hd_out(unsigned int drive,unsigned int nsect,unsigned int sect,
 		unsigned int head,unsigned int cyl,unsigned int cmd,
 		void (*intr_addr)(void))
 {
 	register int port asm("dx");
-
+/*fp=fopen(log.txt);
+	if (drive == 0 )
+	{
+		//printk("0!\n");
+		fputc('0',fp);
+		
+	}else if (drive == 1)
+	{
+		//printk("1!");
+		fputc('1',fp);
+	}*/
 	if (drive>1 || head>15)
 		panic("Trying to write bad sector");
 	if (!controller_ready())
@@ -247,6 +262,7 @@ static void hd_out(unsigned int drive,unsigned int nsect,unsigned int sect,
 	outb_p(cyl>>8,++port);
 	outb_p(0xA0|(drive<<4)|head,++port);
 	outb(cmd,++port);
+	//fclose(fp);
 }
 
 /*
@@ -404,8 +420,12 @@ void do_hd_request(void)
 	if (CURRENT->cmd == WRITE) {
 		printk("In hd.c do_hd_request() dev (1st) is %d\n",dev );
 		//hd_out(dev,nsect,sec,head,cyl,WIN_WRITE,&write_intr);
-		hd_out(dev,nsect,sec,head,cyl,WIN_WRITE,&write_intr);
+		hd_out(devi,nsect,sec,head,cyl,WIN_WRITE,&write_intr);
+		printk("devi is %d" ,devi);
 		for(i=0 ; i<3000 && !(r=inb_p(HD_STATUS)&DRQ_STAT) ; i++)
+			/* nothing */ ;
+		//hd_out(1,nsect,sec,head,cyl,WIN_WRITE,&write_intr);
+		//for(i=0 ; i<3000 && !(r=inb_p(HD_STATUS)&DRQ_STAT) ; i++)
 			/* nothing */ ;
 		if (!r) {
 			bad_rw_intr();

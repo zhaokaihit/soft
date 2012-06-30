@@ -1,25 +1,25 @@
+
+drive = 0,hd_info[drive].cyl = 204
+drive = 1,hd_info[drive].cyl = 204
+drive = 2,hd_info[drive].cyl = 0
 drive = 3,hd_info[drive].cyl = 0
 NR_HD in hd.c is 2
 In hd.c reset_hd(int nr):nr is 0,hd_info[nr].sect is 38,hd_info[nr].sect is 38,h
 d_info[nr].head-1 is 15,hd_info[nr].cyl is 204,WIN_SPECIFY is 145,&recal_intr is
- 83721
+ 84317
 Partition tables ok.
-38915/62000 free blocks
-19504/20666 free inodes
-3454 buffers = 3536896 bytes buffer space
+38903/62000 free blocks
+19497/20666 free inodes
+3450 buffers = 3532800 bytes buffer space
 Free mem: 12582912 bytes
- Ok.
-[/]# ls
-1         bin       etc       mnt       tmp       var
-Image     dev       image     shoelace  usr
-[/]# touch  wuha
-[/]# ls
-1         bin       etc       mnt       tmp       var
-Image     dev       image     shoelace  usr       wuha
-[/]# sync
-[/]# touch 19
-[/]# ls
-1         Image     dev       image     shoelace  usr       wuha
-19        bin       etc       mnt       tmp       var
-[/]# sync
+bh is 143152 ,bhi is 143152
+req->dev is 769
+In hd.c do_hd_request() dev (1st) is 0
+devi is 0req->dev is 769
+In hd.c do_hd_request() dev (1st) is 0
+devi is 0req->dev is 769
+In hd.c do_hd_request() dev (1st) is 0
+devi is 1Wreq->dev is 769
+In hd.c do_hd_request() dev (1st) is 0
+devi is 1W Ok.
 [/]# ß

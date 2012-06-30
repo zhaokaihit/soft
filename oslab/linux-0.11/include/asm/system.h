@@ -64,4 +64,5 @@ __asm__ ("movw $104,%1\n\t" \
 
 #define set_tss_desc(n,addr) _set_tssldt_desc(((char *) (n)),((int)(addr)),"0x89")
 #define set_ldt_desc(n,addr) _set_tssldt_desc(((char *) (n)),((int)(addr)),"0x82")
-
+extern char* devin[10][10];//fight!!!
+int devi ;

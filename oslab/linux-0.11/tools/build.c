@@ -86,9 +86,10 @@ int main(int argc, char ** argv)
 	char major_root, minor_root;
 	struct stat sb;
 
-	//test
+	//int devnum = 0 ;//test
 	fprintf(stderr,"argc is %d\n",argc);
-	
+	//printf("!!!!!!\n");
+	//scanf(devnum);
 	if ((argc != 4) && (argc != 5))
 		usage();
 	if (argc == 5) {
