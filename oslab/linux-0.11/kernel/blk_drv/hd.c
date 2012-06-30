@@ -69,7 +69,7 @@ __asm__("cld;rep;outsw"::"d" (port),"S" (buf),"c" (nr))
 
 extern void hd_interrupt(void);
 extern void rd_load(void);
-
+int work;
 /* This may be used only once, enforced by 'static int callable' */
 int sys_setup(void * BIOS)
 {
@@ -79,7 +79,7 @@ int sys_setup(void * BIOS)
 	unsigned char cmos_disks;
 	struct partition *p;
 	struct buffer_head * bh;
-
+	work = 0 ;
 	if (!callable)
 		return -1;
 	callable = 0;
@@ -87,6 +87,10 @@ int sys_setup(void * BIOS)
 	for (drive=0 ; drive<4 ; drive++) {
 		hd_info[drive].cyl = *(unsigned short *) BIOS;
 		printk("drive = %d,hd_info[drive].cyl = %d\n",drive,hd_info[drive].cyl);
+		if(hd_info[drive].cyl)
+		{
+			work =work+drive+1  ;//0 is not work ;1 is Disk 0 work Disk 1 no work;2 is only Disk1 work ;3 is all
+		}
 		hd_info[drive].head = *(unsigned char *) (2+BIOS);
 		hd_info[drive].wpcom = *(unsigned short *) (5+BIOS);
 		hd_info[drive].ctl = *(unsigned char *) (8+BIOS);
@@ -145,7 +149,7 @@ int sys_setup(void * BIOS)
 	}
 	*/
 	
-	printk("NR_HD in hd.c is %d\n",NR_HD);
+	//printk("NR_HD in hd.c is %d\n",NR_HD);
 #endif
 	for (i=0 ; i<NR_HD ; i++) {
 		hd[i*5].start_sect = 0;
@@ -319,7 +323,7 @@ static void reset_controller(void)
 static void reset_hd(int nr)
 {
 	reset_controller();
-	printk("In hd.c reset_hd(int nr):nr is %d,hd_info[nr].sect is %d,hd_info[nr].sect is %d,hd_info[nr].head-1 is %d,hd_info[nr].cyl is %d,WIN_SPECIFY is %d,&recal_intr is %d\n",nr,hd_info[nr].sect,hd_info[nr].sect,hd_info[nr].head-1,hd_info[nr].cyl,WIN_SPECIFY,&recal_intr);
+	//printk("In hd.c reset_hd(int nr):nr is %d,hd_info[nr].sect is %d,hd_info[nr].sect is %d,hd_info[nr].head-1 is %d,hd_info[nr].cyl is %d,WIN_SPECIFY is %d,&recal_intr is %d\n",nr,hd_info[nr].sect,hd_info[nr].sect,hd_info[nr].head-1,hd_info[nr].cyl,WIN_SPECIFY,&recal_intr);
 	hd_out(nr,hd_info[nr].sect,hd_info[nr].sect,hd_info[nr].head-1,hd_info[nr].cyl,WIN_SPECIFY,&recal_intr);
 }
 
@@ -418,12 +422,24 @@ void do_hd_request(void)
 		return;
 	}	
 	if (CURRENT->cmd == WRITE) {
-		printk("In hd.c do_hd_request() dev (1st) is %d\n",dev );
+		//printk("In hd.c do_hd_request() dev (1st) is %d\n",dev );
 		//hd_out(dev,nsect,sec,head,cyl,WIN_WRITE,&write_intr);
 		
+		if(work == 1)
+		{	
+			devi = 0;	
+			hd_out(devi,nsect,sec,head,cyl,WIN_WRITE,&write_intr);
+			
+		}else if(work == 2)
+		{
+			devi = 1;
+			hd_out(devi,nsect,sec,head,cyl,WIN_WRITE,&write_intr);
+		}else if (work == 3)
+		{
+			hd_out(devi,nsect,sec,head,cyl,WIN_WRITE,&write_intr);
+		}
 		
-		hd_out(devi,nsect,sec,head,cyl,WIN_WRITE,&write_intr);
-		printk("devi is %d" ,devi);
+		//printk("devi is %d" ,devi);
 		for(i=0 ; i<3000 && !(r=inb_p(HD_STATUS)&DRQ_STAT) ; i++)
 			/* nothing */ ;
 		//hd_out(1,nsect,sec,head,cyl,WIN_WRITE,&write_intr);

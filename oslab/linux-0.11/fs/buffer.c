@@ -55,7 +55,7 @@ int sys_sync(void)
 	bh = start_buffer;
 	bhi = start_buffer;
 	temp = start_buffer;
-	printk("bh is %d ,bhi is %d\n",bh,bhi);
+	//printk("bh is %d ,bhi is %d\n",bh,bhi);
 	devi = 0 ;
 	for (i=0 ; i<NR_BUFFERS ; i++,bh++,bhi++) {
 		wait_on_buffer(bh);
@@ -73,7 +73,7 @@ int sys_sync(void)
 		if (bhi->b_dirt)
 		{
 			ll_rw_block(WRITE,bhi);
-			printk("W");
+			//printk("W");
 		}
 	}
 	

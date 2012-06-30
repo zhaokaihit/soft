@@ -150,7 +150,7 @@ repeat:
 	{
 		//printk("?");  disk0 769 disk1 774
 		req->dev = bh->b_dev;
-		printk("req->dev is %d\n",req->dev);
+		//printk("req->dev is %d\n",req->dev);
 		req->errors=0;
 		req->sector = bh->b_blocknr<<1;
 		req->nr_sectors = 2;

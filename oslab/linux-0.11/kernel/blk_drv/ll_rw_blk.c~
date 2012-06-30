@@ -162,7 +162,7 @@ repeat:
 
 		//req1->dev = 774;
 		//add_request(major+blk_dev,req);
-		
+		/*
 		req1->dev = 774;
 		req1->errors=0;
 		req1->sector = bh->b_blocknr<<1;
@@ -172,6 +172,7 @@ repeat:
 		req1->bh = bh;
 		req1->next = NULL;
 		add_request(major+blk_dev,req1);
+	*/
 	}
 	/*
 	req->dev = bh->b_dev;
