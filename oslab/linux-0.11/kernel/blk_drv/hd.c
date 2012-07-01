@@ -98,7 +98,7 @@ int sys_setup(void * BIOS)
 		hd_info[drive].sect = *(unsigned char *) (14+BIOS);
 		BIOS += 16;
 	}//zhaokai change drive<2 to drive<4 but failed........
-	
+	//printk("work is %d\n",work);
 		if (hd_info[3].cyl)
 	{
 		//printk("%d\n",hd_info[1].cyl);
@@ -450,7 +450,17 @@ void do_hd_request(void)
 			goto repeat;
 		}
 		port_write(HD_DATA,CURRENT->buffer,256);
-	} else if (CURRENT->cmd == READ) {
+	}
+	 else if (CURRENT->cmd == READ) 
+	{
+		if(work == 1)
+		{
+			dev = 0 ;
+		}
+		else if (work == 2)
+		{
+			dev = 1;
+		}
 		hd_out(dev,nsect,sec,head,cyl,WIN_READ,&read_intr);
 	} else
 		panic("unknown hd-command");
